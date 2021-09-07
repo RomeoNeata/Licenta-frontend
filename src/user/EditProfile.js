@@ -174,9 +174,20 @@ class EditProfile extends Component{
                     <div className="form-group">
                         <label className="text-muted">Favourite Game</label>
                         <select onChange={this.handleChange("favourite_game")} id="games" name="games" value={favourite_game} >
-                            <option>None</option>
+                        <option>None</option>
                             <option>League of Legends</option>
                             <option>Valorant</option>
+                            <option>Starcraft</option>
+                            <option>Counter-Strike Global Offensive</option>
+                            <option>Dota</option>
+                            <option>Team Fortress 2</option>
+                            <option>Overwatch</option>
+                            <option>Diablo</option>
+                            <option>Knockout City</option>
+                            <option>Fifa</option>
+                            <option>NBA 2k</option>
+                            <option>World of Warcraft</option>
+                            <option>Heroes of the storm</option>
                         </select>
                     </div>
                     <button onClick={this.clickUpdate} className="btn btn-raised btn-primary">Update</button>

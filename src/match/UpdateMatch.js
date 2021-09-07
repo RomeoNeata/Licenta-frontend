@@ -1,26 +1,64 @@
 import React, {Component} from 'react'
-import { Redirect } from 'react-router-dom'
+import { getMatch, update } from './apiMatch'
 import { isAuthenticated } from '../core/Navbar'
-import {create} from "./apiMatch"
-import csgo from '../images/csgo.jpg'
+import {Redirect} from "react-router-dom"
+import Defaultimg from '../images/logo.jpg'
 
-class NewMatch extends Component{
-
+class EditMatch extends Component{
     constructor(){
         super()
-        this.state={
+        this.state = {
+            id: '',
             title: '',
             body: '',
             image: '',
             game: '',
-            error: '',
-            user:{},
+            error: '', 
             fileSize: 0,
             redirect: false
-
         }
     }
-    
+
+    init = (matchId) => {
+        getMatch(matchId)
+        .then(data =>{
+            if(data.error){
+                this.setState({redirect: true})
+            }
+            else
+            this.setState({id: data._id,
+                id: data._id, 
+                title: data.title,
+                body: data.body,
+                game: data.game,
+                error: ''    
+            })
+        })
+    }
+
+    componentDidMount(){
+        this.matchData = new FormData()
+        const matchId = this.props.match.params.matchId
+        this.init(matchId)
+    }
+
+    clickSubmit = event =>{
+        event.preventDefault()
+        
+        if(this.isValid()){
+        const matchId = this.state.id
+        const token = isAuthenticated().token
+
+        update(matchId, token, this.matchData).then(data => {
+                console.log(data)
+                if(data.error) this.setState({error: data.error})
+                else
+                this.setState({title: '', body: '', game: '', redirect: true})
+                
+            })
+        }
+    }
+
     handleChange = text => event => {
         this.setState({error: ""})
         const value = text === "image" ? event.target.files[0] : event.target.value
@@ -28,7 +66,7 @@ class NewMatch extends Component{
         this.matchData.set(text, value)
         this.setState({[text]: value, fileSize })
     }
-    
+
     isValid = () => {
         const { title, body, game, fileSize } = this.state;
         if (fileSize > 1000000) {
@@ -53,48 +91,28 @@ class NewMatch extends Component{
           return true
       };
 
-    
-    clickSubmit = event =>{
-        event.preventDefault()
-        
-        if(this.isValid()){
-        const userId = isAuthenticated().user._id
-        const token = isAuthenticated().token
-        console.log(this.matchData)
-        create(userId, token, this.matchData).then(data => {
-                console.log(data)
-                if(data.error) this.setState({error: data.error})
-                else
-                this.setState({title: '', body: '', game: '', redirect: true})
-                
-            })
-        }
-    }
 
-
-
-    componentDidMount(){
-        this.matchData = new FormData()
-        this.setState({user: isAuthenticated().user})
-    }
-    
     render(){
-        const {title, body, game, image, user, error, redirect} = this.state
-
+        const{ id, title, body, game, redirect, error} = this.state
         if(redirect){
-            return <Redirect to={`/user/${user._id}`}></Redirect>
+            return <Redirect to={`/matches`}></Redirect>
         }
-
-        return (
-            <div className="container">
-                <h2 className="mt-4 mb-4">Create a new match</h2>           
+        return(
+            <div>
+                <h2>{title}</h2>
+                <div className="container">
+                <h2 className="mt-4 mb-4">Create a new match</h2>   
                 <div className="alert" style={{display: error ? "" : "none"}}>
                     {error}
-                </div>
+                </div>        
+                <img src={`${process.env.REACT_APP_BACKEND_URL}/matches/image/${id}`} 
+                    onError={i =>(i.target.src = `${Defaultimg}`)}
+                    style={{ height: "auto", width: "30%" }}
+                        />
                 <form>
                     <div className="form-group">
                         <label className="text-muted">Image</label>
-                        <input onChange={this.handleChange("image")} type ="file" accept="image/*" className="form-control" ></input>
+                        <input onChange={this.handleChange("image")} type ="file" accept="image/*" className="form-control"  ></input>
                     </div>
                     <div className="form-group">
                         <label className="text-muted">Title</label>
@@ -123,13 +141,13 @@ class NewMatch extends Component{
                             <option>Heroes of the storm</option>
                         </select>
                     </div>
-                    <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">Submit</button>
+                    <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">Update Match</button>
                 </form>
-                <img className="img-wrapper" src={csgo} style={{width:"100%"}}></img>
 
+            </div>
             </div>
         )
     }
 }
 
-export default NewMatch
+export default EditMatch

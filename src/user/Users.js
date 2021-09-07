@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
-import Defaultimg from '../images/logo.jpg'
+import Defaultimg from '../images/defaultProfile.png'
 
 class Users extends Component{
     constructor(){
@@ -34,20 +34,23 @@ class Users extends Component{
         const {users} = this.state
         return(
             <div className="container">
-            <h2 className="mt-5 mb-5">Users</h2>
-            <div className ="row">
+            <h2 className="mt-5 mb-5">Gamers that signed up on PerfectTeam</h2>
+            <div className ="row text-center">
                 {users.map((user, i) => (
                     <div className="bg-image hover-overlay ripple" >
                     <img
-                      src={Defaultimg}
+                      src={`https://avatars.dicebear.com/api/bottts/:${user._id}.svg`}
                       className="img-fluid"
+                      style={{ height: "100px", width: "120px"}}
                     />
                     <div classname="mask"></div>
                     <div className="card col-md-4" style={{width: "18rem"}} key ={i}>
-                        <h5 className="card-title">{user.username}</h5>
+                        <h5 className="card-title">{user.username} </h5>
+                        <h6 className="card-title">Discord: {user.discord_id}</h6>
                         <p className="card-text" >
-                            {user.created}
+                            {user.favourite_game}
                         </p>
+                        <hr/>
                     </div>
                     <Link to={`/user/${user._id}`} class="btn btn-raised btn btn-primary btn-sm">View Profile</Link>
                     </div>

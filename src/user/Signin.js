@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
+import val from '../images/val.jpg'
 
 class Signin extends Component{
     constructor(){
@@ -90,6 +91,8 @@ signin = user =>{
                     </div>
                     <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">Submit</button>
                 </form>
+                <img className="img-wrapper" src={val} style={{width:"100%"}}></img>
+
             </div>
         )
     }

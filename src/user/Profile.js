@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import { isAuthenticated } from '../core/Navbar'
-import Defaultimg from '../images/logo.jpg'
+import Defaultimg from '../images/defaultProfile.png'
 import DeleteUser from './DeleteUser'
 import {getMatchbyUser} from '../match/apiMatch'
 
@@ -45,7 +45,7 @@ class Profile extends Component{
                 console.log(data.error)
             }
             else{
-                this.setState({match: data})
+                this.setState({matches: data.matches})
             }
         })
         
@@ -63,15 +63,16 @@ class Profile extends Component{
 
 
         return (
-            <div className="containter">
-                <h2 className="mt-5 mb-5">Profile</h2>
-                <div className="row lead mt-5 mb-5">
-                    <p>Hello {user.username}</p>
+            <div  style={{textAlign: 'center', alignSelf: 'center'}} className="containter">
+                <div className="row lead mt-5 mb-5" >
+                    <p >Hello {user.username}</p>
+                    <div className="d-flex justify-content-center align-items-center border border-light p-5">
                     <img
-                        src={Defaultimg}
-                        className="img-fluid"
+                        src={`https://avatars.dicebear.com/api/bottts/:${user._id}.svg`}
+                        style={{ height: "30%", width: "30%", display:"center"}}
+                        className="img-fluid "
                         />
-                    <p>Email: {user.email}</p>
+                        </div>
                     <p>{`Joined ${new Date(user.created).toDateString()}`}</p>
                     <p>Discord Id: {user.discord_id}</p>
                     <p>Favourite game: {user.favourite_game}</p>
@@ -92,20 +93,23 @@ class Profile extends Component{
                         </div>
                     )}                
                 </div>
-                <div className="col-md-4">
+                
+                <div >
                         <h3 className="text-primary">{matches.length} Matches</h3>
                         <hr />
                         {matches.map((match, i) => (
                             <div key={i}>
                                 <div>
                                     <Link to={`/matches/${match._id}`}>
-                                        <div>
-                                            <p className="lead">{match.title}</p>
+                                        <div style={{border:"4px"}}>
+                                            <p className="lead">{match.title} </p>
+                                            <p className="text-wrap">{match.game}</p>
                                         </div>
                                     </Link>
                                 </div>
                             </div>
                         ))}
+                        <hr/>
                     </div>
             </div>
         )

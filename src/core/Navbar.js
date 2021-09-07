@@ -55,7 +55,6 @@ class Navbar extends Component{
         <li><a href="/">PerfecTTeam</a></li>
         <li><a href="/users">Gamers</a></li>
         <li><a href="/matches">Matches</a></li>
-        <li><a href={`/matches/game/${isAuthenticated().user.favourite_game}`}>Matches for you</a></li>
         <li><a href="/contact">Contact</a></li>
         <li><a href="/about">About</a></li>
         {!isAuthenticated() && (

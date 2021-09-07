@@ -29,9 +29,10 @@ class MatchesbyGame extends Component{
                 {matches.map((match, i) => {
                     const userId = match.postedBy ? `/user/${match.postedBy._id}` : ""
                     const userName = match.postedBy ? `/user/${match.postedBy.username}` : "Unknown"
-     
+                    
                     return (
                         <div className="card col-md-4" key={i}>
+                            
                             <div className="card-body">
                                 <img
                                     src={`${process.env.REACT_APP_BACKEND_URL}/matches/image/${match._id}`}

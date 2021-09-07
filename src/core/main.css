@@ -76,7 +76,17 @@ input[type="text"]{
     min-width: 100px;
     padding: 5px;
 }
-
+.column {
+    float: left;
+    width: 50%;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: inline-block;
+    clear: both;
+  }
 
 /*Mobile optimisation*/
 @media screen and (max-width: 680px) {
